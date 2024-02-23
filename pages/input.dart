@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import 'package:main/data/variables.dart';
 
 void main() {
   runApp(Input());
@@ -40,8 +41,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Map<String, dynamic> localMap = getValue();
+
   final ScrollController _scrollController = ScrollController();
   List<TextEditingController> listController = [TextEditingController()];
+  List<bool> buttonEnabledList = [true];
+  List<bool> textEnabledList = [true];
   final Color initialBorder = Colors.black;
   final Color finalBorder = Colors.green;
 
@@ -70,15 +75,68 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  bool confirmInput(int index) {
+  void _onButtonPressed(int index) {
     today = DateTime.now();
     currentDate = dateFormat.format(today);
     currentTime = timeFormat.format(today);
     print(currentTime);
     values.add(
         listController[index].text + "_" + currentDate + "_" + currentTime);
-    return true;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation'),
+          content: Text('Do you want to disable this button and text field?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
+    ).then((value) {
+      if (value != null && value) {
+        setState(() {
+          buttonEnabledList[index] = false;
+          textEnabledList[index] = false;
+        });
+      }
+    });
   }
+
+  // void _onButtonPressed(int index) {
+  //   today = DateTime.now();
+  //   currentDate = dateFormat.format(today);
+  //   currentTime = timeFormat.format(today);
+  //   print(currentTime);
+  //   values.add(
+  //       listController[index].text + "_" + currentDate + "_" + currentTime);
+  //   setState(() {
+  //     buttonEnabledList[index] = false;
+  //     textEnabledList[index] = false;
+  //   });
+  //   // Add your button click logic here
+  // }
+
+  // bool confirmInput(int index) {
+  //   today = DateTime.now();
+  //   currentDate = dateFormat.format(today);
+  //   currentTime = timeFormat.format(today);
+  //   print(currentTime);
+  //   values.add(
+  //       listController[index].text + "_" + currentDate + "_" + currentTime);
+  //   return false;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +151,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              height: 300,
+            Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,6 +191,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: TextFormField(
+                                    enabled: buttonEnabledList[index],
                                     controller: listController[index],
                                     autofocus: false,
                                     style: const TextStyle(
@@ -177,34 +235,46 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  bool confirmOnInput = confirmInput(index);
-
-                                  // today = DateTime.now();
-                                  // currentDate = dateFormat.format(today);
-                                  // currentTime = timeFormat.format(today);
-                                  // print(currentTime);
-                                  // values.add(listController[index].text +
-                                  //     "_" +
-                                  //     currentDate +
-                                  //     "_" +
-                                  //     currentTime);
-                                  // print(values[index]);
-                                  setState(() {
-                                    if (confirmOnInput) {}
-                                    // Change the border color of the TextField
-
-                                    // borderColor = Colors.green;
-                                  });
-                                  snackBar(listController[index].text);
-                                },
-                                child: const Icon(
+                              IconButton(
+                                iconSize: 40,
+                                icon: const Icon(
                                   Icons.check_rounded,
-                                  color: Color(0xFF6B74D6),
-                                  size: 35,
                                 ),
-                              )
+                                // the method which is called
+                                // when button is pressed
+                                onPressed: buttonEnabledList[index]
+                                    ? () => _onButtonPressed(index)
+                                    : null,
+                                // onPressed: confirmInput(index) ? null : () => {},
+                              ),
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     bool confirmOnInput = confirmInput(index);
+
+                              //     // today = DateTime.now();
+                              //     // currentDate = dateFormat.format(today);
+                              //     // currentTime = timeFormat.format(today);
+                              //     // print(currentTime);
+                              //     // values.add(listController[index].text +
+                              //     //     "_" +
+                              //     //     currentDate +
+                              //     //     "_" +
+                              //     //     currentTime);
+                              //     // print(values[index]);
+                              //     setState(() {
+                              //       if (confirmOnInput) {}
+                              //       // Change the border color of the TextField
+
+                              //       // borderColor = Colors.green;
+                              //     });
+                              //     snackBar(listController[index].text);
+                              //   },
+                              //   child: const Icon(
+                              //     Icons.check_rounded,
+                              //     color: Color(0xFF6B74D6),
+                              //     size: 35,
+                              //   ),
+                              // )
                             ],
                           ),
                         );
@@ -217,6 +287,8 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         setState(() {
                           listController.add(TextEditingController());
+                          buttonEnabledList.add(true);
+                          textEnabledList.add(true);
                         });
                       },
                       child: Center(
@@ -233,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const SizedBox(
-                      width: 10,
+                      width: 50,
                     )
                   ],
                 ),
