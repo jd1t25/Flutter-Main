@@ -1,5 +1,8 @@
 // ignore_for_file: must_be_immutable, recursive_getters, prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
+import 'package:app/data/database.dart';
+import 'package:app/pages/sub_pages/top_input_page.dart';
+import 'package:app/util/listview.dart';
 import 'package:flutter/material.dart';
 
 class InputPage extends StatefulWidget {
@@ -12,7 +15,20 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  // List Database
+  ListDatabase db = ListDatabase();
   get _ifcode => widget.ifcode;
+  // final List _inputlist = [];
+
+  // Add
+
+  void addInput() {
+    // db.inputlistdata =
+    setState(() {
+      db.inputlistdata.add(TextEditingController());
+      db.inputlistbutton.add(false);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,50 +45,26 @@ class _InputPageState extends State<InputPage> {
       ),
       body: Column(
         children: [
-          Column(
-            children: [
-              Container(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: Center(
-                      child: const Text("Inprocess Inspection : X-R Chart")),
-                  color: Colors.lightBlue.shade100,
-                  width: MediaQuery.of(context).size.width),
-              Container(
-                  color: Colors.grey.shade300,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      Row(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text("IF CODE: $_ifcode"),
-                          Text("Part Name: "),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text("Dimension: "),
-                          Text("UCL: "),
-                          Text("LCL: "),
-                        ],
-                      ),
-                    ],
-                  )),
-              Container(
-                  color: Colors.yellow.shade100,
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("Machine No: "),
-                      Text("Operator Name: "),
-                    ],
-                  )),
-            ],
+          TopNav(ifcode: _ifcode),
+          SizedBox(
+            height: 20,
           ),
+          Expanded(
+              child: ListViewInput(
+            inputlistdata: db.inputlistdata,
+            inputlistbutton: db.inputlistbutton,
+          )),
+          // Center(
+          //     child: ElevatedButton(
+          //   child: Text('heloo'),
+          //   onPressed: () {},
+          // ))
           // ListView.builder(itemBuilder: itemBuilder)
+          FloatingActionButton(
+              onPressed: () {
+                addInput();
+              },
+              child: Icon(Icons.add))
         ],
       ),
     );
