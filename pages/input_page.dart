@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, recursive_getters, prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:app/data/database.dart';
+import 'package:app/data/gsheets.dart';
 import 'package:app/pages/sub_pages/top_input_page.dart';
 import 'package:app/util/listview.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,21 @@ class _InputPageState extends State<InputPage> {
   // List Database
   ListDatabase db = ListDatabase();
   get _ifcode => widget.ifcode;
-  // final List _inputlist = [];
+  GSheetsDatabase gs = GSheetsDatabase.getInstance();
+  late final List<String?> _inputlist;
+
+  @override
+  void initState() {
+    super.initState();
+    _topInput();
+  }
+
+  Future<void> _topInput() async {
+    // TODO try loading
+    _inputlist = await gs.getTopInput(widget.ifcode);
+  }
 
   // Add
-
   void addInput() {
     // db.inputlistdata =
     setState(() {
@@ -29,6 +41,12 @@ class _InputPageState extends State<InputPage> {
       db.inputlistbutton.add(false);
     });
   }
+
+  // @override
+  // void dispose() {
+  //   db.inputlistdata.dispose(); // Dispose of TextEditingController
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +63,13 @@ class _InputPageState extends State<InputPage> {
       ),
       body: Column(
         children: [
-          TopNav(ifcode: _ifcode),
+          // TopNav(ifcode: _ifcode, partName: '',),
+          TopNav(
+              ifcode: _ifcode,
+              partName: _inputlist[0],
+              uclDimension: _inputlist[1],
+              lclDimension: _inputlist[2],
+              basisDimension: _inputlist[3]),
           SizedBox(
             height: 20,
           ),
@@ -64,7 +88,7 @@ class _InputPageState extends State<InputPage> {
               onPressed: () {
                 addInput();
               },
-              child: Icon(Icons.add))
+              child: Icon(Icons.add)),
         ],
       ),
     );

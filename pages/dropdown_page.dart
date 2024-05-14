@@ -1,5 +1,8 @@
-// ignore_for_file: prefer_final_fields, prefer_const_constructors_in_immutables, unused_import
+// ignore_for_file: prefer_final_fields, prefer_const_constructors_in_immutables, unused_import, non_constant_identifier_names, avoid_print
 
+// import 'package:app/data/gsheet.dart';
+import 'package:app/data/globals.dart';
+import 'package:app/data/gsheets.dart';
 import 'package:app/util/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'input_page.dart';
@@ -15,6 +18,39 @@ class Dropdown extends StatefulWidget {
 class _DropdownState extends State<Dropdown> {
   // Variables
   String _ifValue = "2M085";
+  // GsheetDatabase gs = GsheetDatabase();
+  GSheetsDatabase gs = GSheetsDatabase.getInstance();
+
+  final SnackBar snackBar =
+      const SnackBar(content: Text("Google Sheet Initialized"));
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _Ginit();
+    });
+    // () async {
+    //   await gs.init();
+    // }();
+    // snackbarKey.currentState?.showSnackBar(snackBar);
+    // SnackBar(content: Text('Google Sheet initialized'));
+  }
+
+  _Ginit() async {
+    await gs.init();
+    setState(() {
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    });
+  }
+
+  // @override // // ignore: must_call_super
+  // initState() {
+  //   // ignore: avoid_print
+  //   // print("initState Called");
+  //   gs.GsheetRun();
+  //   print(gs.sheets.)
+  // }
 
   List _ifcode = [
     ['2M085  -  ID 44.700', '2M085'],
@@ -60,6 +96,13 @@ class _DropdownState extends State<Dropdown> {
                 onChanged: (value) {
                   setState(() {
                     _ifValue = value;
+                    print(_ifValue);
+                    gs.readData();
+                    // print(gs.readData().then(
+                    //   (value) {
+                    //     print('$value');
+                    //   },
+                    // ));
                   });
                 }),
             const SizedBox(height: 30),

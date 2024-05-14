@@ -4,8 +4,18 @@ import 'package:flutter/material.dart';
 
 class TopNav extends StatelessWidget {
   final String ifcode;
+  final String? partName;
+  final String? basisDimension;
+  final String? uclDimension;
+  final String? lclDimension;
 
-  const TopNav({super.key, required this.ifcode});
+  const TopNav(
+      {super.key,
+      required this.ifcode,
+      required this.partName,
+      required this.uclDimension,
+      required this.lclDimension,
+      required this.basisDimension});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +36,7 @@ class TopNav extends StatelessWidget {
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("IF CODE: ifcode"),
+                    Text("IF CODE: $ifcode"),
                     Text("Part Name: "),
                   ],
                 ),
