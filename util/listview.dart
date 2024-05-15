@@ -2,6 +2,7 @@
 
 // import 'package:app/data/database.dart';
 // import 'package:app/util/check_value.dart';
+import 'package:app/data/gsheets.dart';
 import 'package:app/util/dialog_tuple.dart';
 // import 'package:app/util/test.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,8 @@ class ListViewInput extends StatefulWidget {
 }
 
 class _ListViewInputState extends State<ListViewInput> {
+  GSheetsDatabase gs = GSheetsDatabase.getInstance();
+
   // On Submit
   void onSubmit(String val, int index) {
     // CheckValue(value: double.parse(val));
@@ -65,6 +68,7 @@ class _ListViewInputState extends State<ListViewInput> {
                       widget.inputlistdataenable[index] =
                           !widget.inputlistdataenable[index];
                     });
+                    gs.saveData(widget.inputlistdata[index].text);
                     Navigator.pop(context, false);
                   },
                   child: const Text('Ok'))

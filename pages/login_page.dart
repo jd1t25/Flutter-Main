@@ -10,6 +10,8 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({super.key});
 
+  void Login() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +61,8 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 30),
                   ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/homepage');
+                        Login();
+                        // Navigator.pushNamed(context, '/homepage');
                       },
                       child: Text("Sign In"))
                 ],
