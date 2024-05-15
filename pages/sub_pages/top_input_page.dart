@@ -37,15 +37,15 @@ class TopNav extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text("IF CODE: $ifcode"),
-                    Text("Part Name: "),
+                    Text("Part Name: $partName"),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("Dimension: "),
-                    Text("UCL: "),
-                    Text("LCL: "),
+                    Text("Dimension: $basisDimension"),
+                    Text("UCL: $uclDimension"),
+                    Text("LCL: $lclDimension"),
                   ],
                 ),
               ],

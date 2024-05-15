@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, recursive_getters, prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: must_be_immutable, recursive_getters, prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last, avoid_print
 
 import 'package:app/data/database.dart';
 import 'package:app/data/gsheets.dart';
@@ -22,15 +22,18 @@ class _InputPageState extends State<InputPage> {
   GSheetsDatabase gs = GSheetsDatabase.getInstance();
   late final List<String?> _inputlist;
 
-  @override
-  void initState() {
-    super.initState();
-    _topInput();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _topInput();
+  // }
 
   Future<void> _topInput() async {
-    // TODO try loading
-    _inputlist = await gs.getTopInput(widget.ifcode);
+    try {
+      _inputlist = await gs.getTopInput(widget.ifcode);
+    } catch (e) {
+      print(e);
+    }
   }
 
   // Add
@@ -61,35 +64,44 @@ class _InputPageState extends State<InputPage> {
         titleTextStyle: const TextStyle(
             fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
       ),
-      body: Column(
-        children: [
-          // TopNav(ifcode: _ifcode, partName: '',),
-          TopNav(
-              ifcode: _ifcode,
-              partName: _inputlist[0],
-              uclDimension: _inputlist[1],
-              lclDimension: _inputlist[2],
-              basisDimension: _inputlist[3]),
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
-              child: ListViewInput(
-            inputlistdata: db.inputlistdata,
-            inputlistbutton: db.inputlistbutton,
-          )),
-          // Center(
-          //     child: ElevatedButton(
-          //   child: Text('heloo'),
-          //   onPressed: () {},
-          // ))
-          // ListView.builder(itemBuilder: itemBuilder)
-          FloatingActionButton(
-              onPressed: () {
-                addInput();
-              },
-              child: Icon(Icons.add)),
-        ],
+      body: FutureBuilder(
+        future: _topInput(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
+              children: [
+                // TopNav(ifcode: _ifcode, partName: '',),
+                TopNav(
+                    ifcode: _ifcode,
+                    partName: _inputlist[0],
+                    uclDimension: _inputlist[1],
+                    lclDimension: _inputlist[2],
+                    basisDimension: _inputlist[3]),
+                SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                    child: ListViewInput(
+                  inputlistdata: db.inputlistdata,
+                  inputlistbutton: db.inputlistbutton,
+                )),
+                // Center(
+                //     child: ElevatedButton(
+                //   child: Text('heloo'),
+                //   onPressed: () {},
+                // ))
+                // ListView.builder(itemBuilder: itemBuilder)
+                FloatingActionButton(
+                    onPressed: () {
+                      addInput();
+                    },
+                    child: Icon(Icons.add)),
+              ],
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

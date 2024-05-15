@@ -24,24 +24,32 @@ class _DropdownState extends State<Dropdown> {
   final SnackBar snackBar =
       const SnackBar(content: Text("Google Sheet Initialized"));
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _Ginit();
-    });
-    // () async {
-    //   await gs.init();
-    // }();
-    // snackbarKey.currentState?.showSnackBar(snackBar);
-    // SnackBar(content: Text('Google Sheet initialized'));
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // WidgetsBinding.instance.addPostFrameCallback((_) {
+  //   //   _Ginit();
+  //   // });
+  //   // // () async {
+  //   //   await gs.init();
+  //   // }();
+  //   // snackbarKey.currentState?.showSnackBar(snackBar);
+  //   // SnackBar(content: Text('Google Sheet initialized'));
+  // }
 
-  _Ginit() async {
-    await gs.init();
-    setState(() {
+  Future<void> _Ginit() async {
+    try {
+      await gs.init();
+    } catch (e) {
+      print(e);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       snackbarKey.currentState?.showSnackBar(snackBar);
+      // SnackBar(content: Text('Google Sheet initialized'));
     });
+    // setState(() {
+    //   snackbarKey.currentState?.showSnackBar(snackBar);
+    // });
   }
 
   // @override // // ignore: must_call_super
@@ -78,45 +86,54 @@ class _DropdownState extends State<Dropdown> {
         titleTextStyle: const TextStyle(
             fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
       ),
-      body: Center(
-        // height: 400,
-        // width: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomDropdown(
-                width: 300,
-                value: _ifValue,
-                dataList: _ifcode.map<DropdownMenuItem>(
-                  (item) {
-                    return DropdownMenuItem(
-                        value: item[1], child: Text(item[0]));
-                  },
-                ).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _ifValue = value;
-                    print(_ifValue);
-                    gs.readData();
-                    // print(gs.readData().then(
-                    //   (value) {
-                    //     print('$value');
-                    //   },
-                    // ));
-                  });
-                }),
-            const SizedBox(height: 30),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => InputPage(ifcode: _ifValue)));
-                },
-                child: const Text('Next'))
-          ],
-        ),
-      ),
+      body: FutureBuilder(
+          future: _Ginit(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Center(
+                // height: 400,
+                // width: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomDropdown(
+                        width: 300,
+                        value: _ifValue,
+                        dataList: _ifcode.map<DropdownMenuItem>(
+                          (item) {
+                            return DropdownMenuItem(
+                                value: item[1], child: Text(item[0]));
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _ifValue = value;
+                            print(_ifValue);
+                            gs.readData();
+                            // print(gs.readData().then(
+                            //   (value) {
+                            //     print('$value');
+                            //   },
+                            // ));
+                          });
+                        }),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      InputPage(ifcode: _ifValue)));
+                        },
+                        child: const Text('Next'))
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 }

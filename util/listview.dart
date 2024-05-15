@@ -5,6 +5,7 @@
 import 'package:app/util/dialog_tuple.dart';
 // import 'package:app/util/test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ListViewInput extends StatefulWidget {
   final List inputlistdata;
@@ -85,6 +86,11 @@ class _ListViewInputState extends State<ListViewInput> {
           return ListTile(
               title: TextField(
                 controller: widget.inputlistdata[index],
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp(r'^(\d+)?\.?\d{0,3}'))
+                ],
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 10),
                     border: OutlineInputBorder(),
