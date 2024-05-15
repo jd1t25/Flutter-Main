@@ -124,7 +124,8 @@ class _DropdownState extends State<Dropdown> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      InputPage(ifcode: _ifValue)));
+                                      // InputPage(ifcode: _ifValue)));
+                                      MainInput(ifcode: _ifValue)));
                         },
                         child: const Text('Next'))
                   ],

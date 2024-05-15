@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 class ListViewInput extends StatefulWidget {
   final List inputlistdata;
   final List inputlistbutton;
+  final List inputlistdataenable;
   // final List<bool>
 
   // List inputlistdata = inputlistdata;
@@ -18,6 +19,7 @@ class ListViewInput extends StatefulWidget {
     super.key,
     required this.inputlistdata,
     required this.inputlistbutton,
+    required this.inputlistdataenable,
   });
 
   @override
@@ -25,7 +27,8 @@ class ListViewInput extends StatefulWidget {
 }
 
 class _ListViewInputState extends State<ListViewInput> {
-  void onSubmit(String val) {
+  // On Submit
+  void onSubmit(String val, int index) {
     // CheckValue(value: double.parse(val));
     DialogTuple dialogtuple = check(value: double.parse(val));
     showDialog(
@@ -58,8 +61,11 @@ class _ListViewInputState extends State<ListViewInput> {
                   child: const Text('Cancel')),
               TextButton(
                   onPressed: () {
-                    //
-                    Navigator.pop(context);
+                    setState(() {
+                      widget.inputlistdataenable[index] =
+                          !widget.inputlistdataenable[index];
+                    });
+                    Navigator.pop(context, false);
                   },
                   child: const Text('Ok'))
             ],
@@ -85,6 +91,7 @@ class _ListViewInputState extends State<ListViewInput> {
           });
           return ListTile(
               title: TextField(
+                enabled: widget.inputlistdataenable[index],
                 controller: widget.inputlistdata[index],
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
@@ -104,8 +111,11 @@ class _ListViewInputState extends State<ListViewInput> {
                   // color: Colors.green,
                 ),
                 // onPressed: widget.inputlistbutton[index] ? enableButton : null,
-                onPressed: widget.inputlistbutton[index]
-                    ? () => onSubmit(widget.inputlistdata[index].text)
+                onPressed: widget.inputlistdataenable[index] &&
+                        widget.inputlistbutton[index]
+                    ? () {
+                        onSubmit(widget.inputlistdata[index].text, index);
+                      }
                     : null,
               ));
         });

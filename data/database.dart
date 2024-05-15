@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 class ListDatabase {
   List<TextEditingController> inputlistdata = [];
   List<bool> inputlistbutton = [];
+  List<bool> inputlistdataenable = [];
+  List<bool> inputlistbuttonenable = [];
   // List<Color> inputlistcolor = [];
 
   // @override
