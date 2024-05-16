@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables
 
+import 'package:app/data/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 class TopNav extends StatelessWidget {
   final String ifcode;
@@ -19,6 +21,8 @@ class TopNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String operatorName = toBeginningOfSentenceCase(mainuser);
+
     return Column(
       children: [
         Container(
@@ -57,7 +61,7 @@ class TopNav extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text("Machine No: "),
-                Text("Operator Name: "),
+                Text("Operator Name: $operatorName"),
               ],
             )),
       ],

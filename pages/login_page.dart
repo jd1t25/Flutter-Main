@@ -1,16 +1,55 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, avoid_print, use_build_context_synchronously
 
+import 'package:app/data/gsheets.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  // Variable Controllers
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  // Variable Controllers
   final _username = TextEditingController();
+
   final _password = TextEditingController();
 
-  LoginPage({super.key});
+  bool isloading = false;
+  String errormessage = '';
 
-  void Login() {}
+  @override
+  void initState() {
+    super.initState();
+    _Ginit();
+  }
+
+  GSheetsDatabase gs = GSheetsDatabase.getInstance();
+
+  Future<void> _Ginit() async {
+    try {
+      await gs.init();
+    } catch (e) {
+      print(e);
+    }
+  }
+  // WidgetsBinding.instance.addPostFrameCallback((_) {
+  //   snackbarKey.currentState?.showSnackBar(snackBar);
+  //   // SnackBar(content: Text('Google Sheet initialized'));
+  // });
+
+  // void Login(String username, String password) async {
+  //   try {
+  //     bool check = await gs.checkLogin(username, password);
+  //     await Future<void>.delayed(Duration(seconds: 2));
+  //     if (check) {
+  //       Navigator.pushNamed(context, '/homepage');
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +99,40 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: 30),
                   ElevatedButton(
-                      onPressed: () {
-                        Login();
+                      onPressed: () async {
+                        errormessage = '';
+                        try {
+                          bool check = await gs.checkLogin(
+                              _username.text, _password.text);
+                          setState(() {
+                            isloading = true;
+                          });
+                          await Future<void>.delayed(Duration(seconds: 2));
+                          setState(() {
+                            isloading = false;
+                          });
+                          if (check) {
+                            Navigator.pushNamed(context, '/homepage');
+                          } else {
+                            errormessage = 'Username or Password is Wrong';
+                          }
+                        } catch (e) {
+                          print("lol");
+                        }
+                        // Login(_username.text, _password.text);
                         // Navigator.pushNamed(context, '/homepage');
                       },
-                      child: Text("Sign In"))
+                      child: Text("Sign In")),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(child: isloading ? CircularProgressIndicator() : null),
+                  Center(
+                    child: Text(
+                      errormessage,
+                      style: TextStyle(color: Colors.red.shade600),
+                    ),
+                  )
                 ],
               )),
         ],
