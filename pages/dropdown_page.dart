@@ -60,6 +60,9 @@ class _DropdownState extends State<Dropdown> {
   //   print(gs.sheets.)
   // }
 
+  //TODO
+  // ifcode to gsheet
+
   List _ifcode = [
     ['2M085  -  ID 44.700', '2M085'],
     ['2M086  -  ID 133.700', '2M086'],

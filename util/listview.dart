@@ -29,6 +29,10 @@ class ListViewInput extends StatefulWidget {
 
 class _ListViewInputState extends State<ListViewInput> {
   GSheetsDatabase gs = GSheetsDatabase.getInstance();
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // On Submit
   void onSubmit(String val, int index) {

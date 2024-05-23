@@ -1,10 +1,13 @@
 // ignore_for_file: must_be_immutable, recursive_getters, prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last, avoid_print
 
 import 'package:app/data/database.dart';
+import 'package:app/data/globals.dart';
 import 'package:app/data/gsheets.dart';
 import 'package:app/pages/sub_pages/top_input_page.dart';
 import 'package:app/util/listview.dart';
 import 'package:flutter/material.dart';
+
+// var ucl, lcl, bd;
 
 class MainInput extends StatelessWidget {
   final String ifcode;
@@ -17,6 +20,9 @@ class MainInput extends StatelessWidget {
   Future<void> _topInput() async {
     try {
       _inputlist = await gs.getTopInput(ifcode);
+      ucl = _inputlist[1];
+      lcl = _inputlist[2];
+      bd = _inputlist[3];
     } catch (e) {
       print(e);
     }

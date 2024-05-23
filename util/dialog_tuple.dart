@@ -1,3 +1,4 @@
+import 'package:app/data/globals.dart';
 import 'package:flutter/material.dart';
 
 class DialogTuple {
@@ -19,12 +20,17 @@ DialogTuple check({required double value}) {
   String lastMessage;
   Color textColor;
 
-  if (value < 5) {
+  // var temp = value < double.parse(ucl);
+  // print(value);
+  // print(double.parse(ucl));
+  // print(temp);
+
+  if (value <= double.parse(ucl) && value >= double.parse(lcl)) {
     message = "Dimension is below mean and within tolerance";
     icon = Icons.check;
     lastMessage = "OK";
     textColor = Colors.green;
-  } else if (value == 5) {
+  } else if (value < double.parse(lcl)) {
     message = "Dimension is below LCL";
     icon = Icons.clear;
     lastMessage = "NOT OK";
