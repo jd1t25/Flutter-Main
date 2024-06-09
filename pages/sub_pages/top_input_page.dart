@@ -10,6 +10,7 @@ class TopNav extends StatelessWidget {
   final String? basisDimension;
   final String? uclDimension;
   final String? lclDimension;
+  final String? machineno;
 
   const TopNav(
       {super.key,
@@ -17,7 +18,8 @@ class TopNav extends StatelessWidget {
       required this.partName,
       required this.uclDimension,
       required this.lclDimension,
-      required this.basisDimension});
+      required this.basisDimension,
+      required this.machineno});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class TopNav extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("Machine No: "),
+                Text("Machine No: $machineno"),
                 Text("Operator Name: $operatorName"),
               ],
             )),

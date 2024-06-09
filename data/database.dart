@@ -14,6 +14,11 @@ class ListDatabase {
   List<bool> inputlistbutton = [];
   List<bool> inputlistdataenable = [];
 
+  void cleardata() {
+    List<TextEditingController> inputlistdata = [];
+    List<bool> inputlistbutton = [];
+    List<bool> inputlistdataenable = [];
+  }
   // void initialized() {
   //   List<TextEditingController> inputlistdata = [];
   //   List<bool> inputlistbutton = [];

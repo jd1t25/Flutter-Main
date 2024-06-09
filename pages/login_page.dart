@@ -48,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
       usernameList = widget.usernameList;
+      // print(usernameList);
       // usernameList = usernameList.map((str) => str.capitalize()).toList();
       username = usernameList.first;
     } else {

@@ -25,9 +25,9 @@ class SplashScreen extends StatelessWidget {
     }
   }
 
-  Future<List<String>> _UserName() async {
-    return gs.getUserName();
-  }
+  // Future<List<String>> _UserName() async {
+  //   return gs.getUserName();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,8 @@ class SplashScreen extends StatelessWidget {
             // nextScreen: const LoginPage(),
             screenFunction: () async {
               await _Ginit();
-              usernameList = await _UserName();
+              // usernameList = await _UserName();
+              usernameList = await gs.getUserName();
               return LoginPage(status: status, usernameList: usernameList);
             },
             // splashIconSize: MediaQuery.of(context).size.width,

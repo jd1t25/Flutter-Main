@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 
 class MainInput extends StatelessWidget {
   final String ifcode;
+  final String machineno;
 
-  MainInput({super.key, required this.ifcode});
+  MainInput({super.key, required this.ifcode, required this.machineno});
 
   GSheetsDatabase gs = GSheetsDatabase.getInstance();
   late final List<String?> _inputlist;
@@ -52,6 +53,7 @@ class MainInput extends StatelessWidget {
                     // TopNav(ifcode: _ifcode, partName: '',),
                     TopNav(
                         ifcode: ifcode,
+                        machineno: machineno,
                         partName: _inputlist[0],
                         uclDimension: _inputlist[1],
                         lclDimension: _inputlist[2],
@@ -98,6 +100,7 @@ class _InputPageState extends State<InputPage> {
   @override
   void initState() {
     super.initState();
+    db.cleardata();
     db.inputlistdata.add(TextEditingController());
     db.inputlistbutton.add(false);
     db.inputlistdataenable.add(true);
