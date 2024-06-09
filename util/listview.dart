@@ -2,11 +2,13 @@
 
 // import 'package:app/data/database.dart';
 // import 'package:app/util/check_value.dart';
+import 'package:app/data/database.dart';
 import 'package:app/data/gsheets.dart';
 import 'package:app/util/dialog_tuple.dart';
 // import 'package:app/util/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:app/pages/input_page.dart';
 
 class ListViewInput extends StatefulWidget {
   final List inputlistdata;
@@ -29,6 +31,7 @@ class ListViewInput extends StatefulWidget {
 
 class _ListViewInputState extends State<ListViewInput> {
   GSheetsDatabase gs = GSheetsDatabase.getInstance();
+  ListDatabase db = ListDatabase.getInstance();
   @override
   void initState() {
     super.initState();
@@ -71,6 +74,9 @@ class _ListViewInputState extends State<ListViewInput> {
                     setState(() {
                       widget.inputlistdataenable[index] =
                           !widget.inputlistdataenable[index];
+                      db.inputlistdata.add(TextEditingController());
+                      db.inputlistbutton.add(false);
+                      db.inputlistdataenable.add(true);
                     });
                     gs.saveData(widget.inputlistdata[index].text);
                     Navigator.pop(context, false);

@@ -82,17 +82,26 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  // List Database
-  ListDatabase db = ListDatabase();
-  // get _ifcode => widget.ifcode;
-  // GSheetsDatabase gs = GSheetsDatabase.getInstance();
-  // late final List<String?> _inputlist;
+  ListDatabase db = ListDatabase.getInstance();
 
   // @override
   // void initState() {
   //   super.initState();
-  //   _topInput();
+  //   db.initialized();
   // }
+  // List Database
+  // ListDatabase db = ListDatabase();
+  // get _ifcode => widget.ifcode;
+  // GSheetsDatabase gs = GSheetsDatabase.getInstance();
+  // late final List<String?> _inputlist;
+
+  @override
+  void initState() {
+    super.initState();
+    db.inputlistdata.add(TextEditingController());
+    db.inputlistbutton.add(false);
+    db.inputlistdataenable.add(true);
+  }
 
   // Future<void> _topInput() async {
   //   try {
@@ -103,14 +112,14 @@ class _InputPageState extends State<InputPage> {
   // }
 
   // Add
-  void addInput() {
-    // db.inputlistdata =
-    setState(() {
-      db.inputlistdata.add(TextEditingController());
-      db.inputlistbutton.add(false);
-      db.inputlistdataenable.add(true);
-    });
-  }
+  // void addInput() {
+  //   // db.inputlistdata =
+  //   setState(() {
+  //     db.inputlistdata.add(TextEditingController());
+  //     db.inputlistbutton.add(false);
+  //     db.inputlistdataenable.add(true);
+  //   });
+  // }
 
   // @override
   // void dispose() {
@@ -129,11 +138,11 @@ class _InputPageState extends State<InputPage> {
           inputlistbutton: db.inputlistbutton,
           inputlistdataenable: db.inputlistdataenable,
         )),
-        FloatingActionButton(
-            onPressed: () {
-              addInput();
-            },
-            child: Icon(Icons.add)),
+        // FloatingActionButton(
+        //     onPressed: () {
+        //       addInput();
+        //     },
+        //     child: Icon(Icons.add)),
       ],
     ));
   }

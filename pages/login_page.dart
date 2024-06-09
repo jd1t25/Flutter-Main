@@ -3,6 +3,7 @@
 // import 'package:app/data/gsheets.dart';
 // import 'package:app/util/custom_dropdown.dart';
 import 'package:app/data/gsheets.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 // import 'package:app/util/title_case.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   // Variable Controllers
   // final _username = TextEditingController();
-  late final usernameList;
+  late final List<String> usernameList;
   var username;
   final _password = TextEditingController();
 
@@ -116,40 +117,91 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 10),
                   Container(
                     width: double.infinity,
-                    child: DropdownButtonFormField<String>(
-                      padding: EdgeInsets.fromLTRB(35, 5, 35, 0),
-                      decoration: InputDecoration(
+                    margin: EdgeInsets.fromLTRB(35, 5, 35, 0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField2(
+                        hint: const Text('Select Username',
+                            style: TextStyle(fontSize: 15)),
+                        isExpanded: true,
+                        isDense: true,
+                        decoration: InputDecoration(
+                          // Add Horizontal padding using menuItemStyleData.padding so it matches
+                          // the menu padding when button's width is not specified.
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 16),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2.0),
-                            borderSide: BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(2),
                           ),
-                          labelText: "Username"),
-                      isExpanded: true,
-                      isDense: true,
-                      focusColor: Colors.grey.shade100,
-                      dropdownColor: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10),
-                      value: username,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      elevation: 16,
-                      // style: const TextStyle(color: Colors.deepPurple),
-                      // underline: Container(
-                      //   height: 2,
-                      //   color: Colors.deepPurpleAccent,
-                      // ),
-                      onChanged: (String? value) {
-                        setState(() {
+                        ),
+                        items: usernameList
+                            .map((item) => DropdownMenuItem<dynamic>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(fontSize: 14),
+                                )))
+                            .toList(),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please Select Username';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
                           username = value!;
-                        });
-                      },
-                      items: usernameList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                        },
+                        buttonStyleData: ButtonStyleData(
+                            // width: double.infinity,
+                            ),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 200,
+                          // width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2),
+                            color: Colors.grey.shade200,
+                          ),
+                          scrollbarTheme: ScrollbarThemeData(
+                            radius: const Radius.circular(40),
+                            thickness: MaterialStateProperty.all(6),
+                            thumbVisibility: MaterialStateProperty.all(true),
+                          ),
+                        ),
+                      ),
                     ),
+                    // child: DropdownButtonFormField<String>(
+                    //   padding: EdgeInsets.fromLTRB(35, 5, 35, 0),
+                    //   decoration: InputDecoration(
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(2.0),
+                    //         borderSide: BorderSide(color: Colors.black),
+                    //       ),
+                    //       labelText: "Username"),
+                    //   isExpanded: true,
+                    //   isDense: true,
+                    //   focusColor: Colors.grey.shade100,
+                    //   dropdownColor: Colors.grey.shade200,
+                    //   borderRadius: BorderRadius.circular(10),
+                    //   value: username,
+                    //   icon: const Icon(Icons.keyboard_arrow_down),
+                    //   elevation: 16,
+                    //   // style: const TextStyle(color: Colors.deepPurple),
+                    //   // underline: Container(
+                    //   //   height: 2,
+                    //   //   color: Colors.deepPurpleAccent,
+                    //   // ),
+                    //   onChanged: (String? value) {
+                    //     setState(() {
+                    //       username = value!;
+                    //     });
+                    //   },
+                    //   items: usernameList
+                    //       .map<DropdownMenuItem<String>>((String value) {
+                    //     return DropdownMenuItem<String>(
+                    //       value: value,
+                    //       child: Text(value),
+                    //     );
+                    //   }).toList(),
+                    // ),
                   ),
                   // Container(
                   //   margin: EdgeInsets.fromLTRB(35, 35, 35, 0),
